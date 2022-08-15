@@ -6,7 +6,7 @@ const Review = require("../models/review");
 
 const { reviewSchema } = require("../schemas.js");
 
-const ExpressError = require("./utils/ExpressError");
+const ExpressError = require("../utils/ExpressError");
 const catchAsync = require("../utils/catchAsync");
 
 const validateReview = (req, res, next) => {
