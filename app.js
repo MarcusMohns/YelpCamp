@@ -63,6 +63,7 @@ app.get("/fakeUser", async (req, res) => {
 });
 
 app.use((req, res, next) => {
+  res.locals.currentIser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
