@@ -1,3 +1,8 @@
+if (process.env.NODE_NEV !== "production") {
+  require.resolve("dotenv").config;
+}
+console.log(process.env.SECRET);
+
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -17,6 +22,8 @@ const reviewRoutes = require("./routes/reviews");
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;
