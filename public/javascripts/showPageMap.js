@@ -12,4 +12,9 @@ map.on("style.load", () => {
 
 new mapboxgl.Marker()
   .setLngLat(campground.geometry.coordinates || [12.550343, 55.665967])
+  .setPopup(
+    new mapboxgl.setPopup({ offset: 25 }).setHTML(
+      `<h3>${campground.title}</h3>`
+    )
+  )
   .addTo(map);
