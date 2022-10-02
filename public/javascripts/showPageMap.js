@@ -1,20 +1,16 @@
 mapboxgl.accessToken = mapToken;
-let map = new mapboxgl.Map({
-  container: "map", // container ID
-  style: "mapbox://styles/mapbox/light-v10", // style URL
-  center: campground.geometry.coordinates || [12.550343, 55.665967], // starting position [lng, lat]
-  zoom: 9, // starting zoom
-  projection: "globe", // display the map as a 3D globe
-});
-map.on("style.load", () => {
-  map.setFog({}); // Set the default atmosphere style
+const map = new mapboxgl.Map({
+  container: "map",
+  style: "mapbox://styles/mapbox/light-v10", // stylesheet location
+  center: campground.geometry.coordinates, // starting position [lng, lat]
+  zoom: 10, // starting zoom
 });
 
 new mapboxgl.Marker()
-  .setLngLat(campground.geometry.coordinates || [12.550343, 55.665967])
+  .setLngLat(campground.geometry.coordinates)
   .setPopup(
-    new mapboxgl.setPopup({ offset: 25 }).setHTML(
-      `<h3>${campground.title}</h3>`
+    new mapboxgl.Popup({ offset: 25 }).setHTML(
+      `<h3>${campground.title}</h3><p>${campground.location}</p>`
     )
   )
   .addTo(map);
