@@ -1,5 +1,8 @@
 {
-  "name": "YelpCamp",
+  "engines": {
+    "node": "20.15.1"
+  },
+  "name": "yelpcamp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
