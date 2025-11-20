@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const path = require("path");
 const User = require("./models/user");
+const https = require("https");
 
 const express = require("express");
 const ExpressError = require("./utils/ExpressError");
@@ -139,6 +140,46 @@ app.use((req, res, next) => {
 app.use("/", userRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/reviews", reviewRoutes);
+
+// Proxy the MapTiler CSS so it is served from our origin and avoids CORS issues
+app.get("/maptiler-sdk.css", (req, res) => {
+  const remote =
+    "https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css";
+  https
+    .get(remote, (proxyRes) => {
+      if (proxyRes.statusCode !== 200) {
+        res.status(proxyRes.statusCode).send("");
+        return;
+      }
+      res.setHeader("Content-Type", "text/css; charset=utf-8");
+      res.setHeader("Cache-Control", "public, max-age=86400");
+      proxyRes.pipe(res);
+    })
+    .on("error", (err) => {
+      console.error("MapTiler proxy error:", err);
+      res.status(502).send("Bad Gateway");
+    });
+});
+
+// Proxy the MapTiler JS bundle so it is served from our origin and avoids CORS issues
+app.get("/maptiler-sdk.umd.min.js", (req, res) => {
+  const remote =
+    "https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js";
+  https
+    .get(remote, (proxyRes) => {
+      if (proxyRes.statusCode !== 200) {
+        res.status(proxyRes.statusCode).send("");
+        return;
+      }
+      res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+      res.setHeader("Cache-Control", "public, max-age=86400");
+      proxyRes.pipe(res);
+    })
+    .on("error", (err) => {
+      console.error("MapTiler JS proxy error:", err);
+      res.status(502).send("Bad Gateway");
+    });
+});
 
 app.get("/", (req, res) => {
   res.render("home");
