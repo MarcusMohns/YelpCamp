@@ -39,7 +39,10 @@ db.once("open", () => {
 });
 
 const app = express();
-app.use("/favicon.ico", express.static("favicon/favicon.ico"));
+app.use(
+  "/favicon.ico",
+  express.static(path.join(__dirname, "favicon", "favicon.ico"))
+);
 
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
