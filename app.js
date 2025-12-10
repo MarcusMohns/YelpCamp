@@ -10,7 +10,6 @@ const express = require("express");
 const ExpressError = require("./utils/ExpressError");
 const session = require("express-session");
 
-const favicon = require("serve-favicon");
 const ejsMate = require("ejs-mate");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
@@ -40,7 +39,6 @@ db.once("open", () => {
 });
 
 const app = express();
-app.use(favicon(__dirname + "/public/favicon/favicon.ico"));
 
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
@@ -106,8 +104,7 @@ const fontSrcUrls = [];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
-      manifestSrc: ["'self'"],
+      defaultSrc: [],
       connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
